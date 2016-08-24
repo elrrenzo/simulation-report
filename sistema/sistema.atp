@@ -103,7 +103,7 @@ C < n 1><>< Ampl.  >< Freq.  ><Phase/T0><   A1   ><   T1   >< TSTART >< TSTOP  >
 14GENNIC   834590.1        60.    255.66                           -1.      100.
 11PIVOT    1.0                                              .050001      10.
 /OUTPUT
-  SHWLA RHWLA 
+  SHWLA RHWLA FAULTAFAULTBFAULTC
   SHWLB RHWLB 
   SHWLC RHWLC 
   GENXIAGENXIBGENXICPIVOT CBXIA CBXIB CBXIC

@@ -1,9 +1,12 @@
-#set term X11 size 600, 900
+#set term X11 size 600, 1200
 set terminal pdf size 7, 14
+#set terminal X11
+
+#set terminal wxt size 350,600 enhanced persist
 
 set style line 1  lc rgb '#0000ee' lt 1 lw 3.0 # --- blue
-set style line 2  lc rgb '#000000' lt 1 lw 3.0 # --- black
-set style line 3  lc rgb '#ff0000' lt 1 lw 3.0 # --- red
+set style line 2  lc rgb '#ff0000' lt 1 lw 3.0 # --- red
+set style line 3  lc rgb '#000000' lt 1 lw 3.0 # --- black
 set style line 4  lc rgb '#008080' lt 1 lw 3.0 # --- teal
 set style line 5  lc rgb '#ff00ff' lt 1 lw 3.0 # --- magenta
 set style line 6  lc rgb '#ff4500' lt 1 lw 3.0 # --- orange
@@ -13,9 +16,10 @@ set style line 6  lc rgb '#ff4500' lt 1 lw 3.0 # --- orange
 #set title font ",12"
 set lmargin at screen 0.10
 set rmargin at screen 0.95
+set grid xtics
 
 
-set multiplot layout 4,1 title filename font ",14" offset 2,0
+set multiplot layout 7,1 title filename font ",14" offset 2,0
 #set offset 0,0,graph 0.05, graph 0.05
 
 set autoscale fix
@@ -49,30 +53,67 @@ plot filename using (column("Time")*1000):(column("iCBXIASHWLA")/1000) title "iC
 	'' using (column("Time")*1000):(column("IA")/1000) title "IA" with lines ls 4, \
 	'' using (column("Time")*1000):(column("IB")/1000) title "IB" with lines ls 5, \
 	'' using (column("Time")*1000):(column("IC")/1000) title "IC" with lines ls 6 
-#3 PLOT Tensoes recepcao
-set title "Recieving terminal"
+
+#3 PLOT Tensoes no ponto de falta
+set title "Fault point"
 set ylabel "kV" offset 0,0
 set size 1,0.10
 set origin 0,0.73
-plot filename using (column("Time")*1000):(column("vRHWLA")/1000) title "vRHWLA" with lines ls 1, \
-	'' using (column("Time")*1000):(column("vRHWLB")/1000) title "vRHWLB" with lines ls 2, \
-	'' using (column("Time")*1000):(column("vRHWLC")/1000) title "vRHWLC" with lines ls 3 
+plot filename using (column("Time")*1000):(column("vFAULTA")/1000) title "vFAULTA" with lines ls 1, \
+	'' using (column("Time")*1000):(column("vFAULTB")/1000) title "vFAULTB" with lines ls 2, \
+	'' using (column("Time")*1000):(column("vFAULTC")/1000) title "vFAULTC" with lines ls 3 
 
-#4 PLOT Correntes recepcao
+#4 PLOT Correntes no ponto de falta
 set title " "
 set ylabel "kA" offset -3.0,0
 #set tmargin at screen TOP
 #set bmargin at screen TOP-DY
-set xtics format "%4.1f"
-set size 1,0.11
-set origin 0,0.647
-set xlabel 'Time [ms]' offset 0,1.0
+set size 1,0.10
+set origin 0,0.657
+plot filename using (column("Time")*1000):(column("iCBNIARHWLA")/1000) title "iCBNIA" with lines ls 4, \
+	'' using (column("Time")*1000):(column("iCBNIBRHWLB")/1000) title "iCBNIB" with lines ls 5, \
+	'' using (column("Time")*1000):(column("iCBNICRHWLC")/1000) title "iCBNIC" with lines ls 6
+#5 PLOT Tensoes recepcao
+set title "Recieving terminal"
+set ylabel "kV" offset 0,0
+set size 1,0.10
+set origin 0,0.57
+plot filename using (column("Time")*1000):(column("vRHWLA")/1000) title "vRHWLA" with lines ls 1, \
+	'' using (column("Time")*1000):(column("vRHWLB")/1000) title "vRHWLB" with lines ls 2, \
+	'' using (column("Time")*1000):(column("vRHWLC")/1000) title "vRHWLC" with lines ls 3 
+
+#6 PLOT Correntes recepcao
+set title " "
+set ylabel "kA" offset -3.0,0
+#set tmargin at screen TOP
+#set bmargin at screen TOP-DY
+set size 1,0.10
+set origin 0,0.497
 plot filename using (column("Time")*1000):(column("iCBNIARHWLA")/1000) title "iCBNIA" with lines ls 4, \
 	'' using (column("Time")*1000):(column("iCBNIBRHWLB")/1000) title "iCBNIB" with lines ls 5, \
 	'' using (column("Time")*1000):(column("iCBNICRHWLC")/1000) title "iCBNIC" with lines ls 6
 
+#7 PLOT Saidas Digitais
+set title " "
+set ylabel " "
+set ytics ("FSA" 1,"FSB" 2.5,"FSC" 4,"FSAB" 5.5,"FSBC" 7,"FSCA" 8.5)
+unset key
+set size 1,0.10
+set origin 0,0.4
+set yrange [0.5:10]
+plot filename using (column("Time")*1000):(column("dFSA")+1) title "FSA" with lines ls 1, \
+	'' using (column("Time")*1000):(column("dFSB")+2.5) title "FSB" with lines ls 2, \
+	'' using (column("Time")*1000):(column("dFSC")+4) title "FSC" with lines ls 3, \
+	'' using (column("Time")*1000):(column("dFSAB")+5.5) title "FSAB" with lines ls 4, \
+	'' using (column("Time")*1000):(column("dFSBC")+7) title "FSBC" with lines ls 5, \
+	'' using (column("Time")*1000):(column("dFSCA")+8.5) title "FSCA" with lines ls 6
+
+
+
+set xlabel 'Time [ms]' offset 0,1.0
+set xtics format "%4.1f"
+
+
 unset multiplot
 
-
-#pause -1
 
